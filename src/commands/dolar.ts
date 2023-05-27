@@ -7,7 +7,7 @@ import { logger } from '../logger'
 /** Pasos de /dolar */
 export const dolarSteps: SimpleOperation[] = [
 	async function (ctx) {
-		Operator.start(ctx, 'dolar')
+		Operator.executeStart(ctx, 'dolar')
 		const subscribed = await toggleDolarSubscriptionOfUser(ctx.chat.id)
 
 		logger.info('[debug] Subscribed to dolar: ' + subscribed)
@@ -17,6 +17,6 @@ export const dolarSteps: SimpleOperation[] = [
 			ctx.reply('Te desuscribiste al valor del dolar, manda el comando de nuevo para suscribirte')
 		}
 
-		Operator.end(ctx, EndReason.OK)
+		Operator.executeEnd(ctx, EndReason.OK)
 	},
 ]

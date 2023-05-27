@@ -31,7 +31,7 @@ export type OperatorStruct = {
 	buffer: {
 		[key in string]: Operation
 	}
-	start: (ctx: ContextParameter, command: OperationName) => void
-	nextStep: SimpleOperation
-	end: (ctx: ContextParameter, reason?: EndReason) => void
+	executeStart: (ctx: ContextParameter, command: OperationName) => void
+	executeNextStep: SimpleOperation
+	executeEnd: (ctx: ContextParameter, reason?: EndReason) => void
 }

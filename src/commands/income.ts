@@ -1,10 +1,9 @@
-import { Markup } from 'telegraf'
-import { ContextParameter, SimpleOperation } from '../commands.types'
+import { SimpleOperation } from '../commands.types'
 import { Operator } from '../operator'
 
 export const incomeSteps: SimpleOperation[] = [
 	async function (ctx) {
-		Operator.start(ctx, 'income')
+		Operator.executeStart(ctx, 'income')
 
 		ctx.reply('Estos son tus ultimos ingresos:... work in progress')
 	},

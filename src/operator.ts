@@ -20,18 +20,21 @@ export const Operator: OperatorStruct = {
 	 * Mantiene guardada una operacion por usuario.
 	 */
 	buffer: {},
-	start(ctx, command) {
+	executeStart(ctx, command) {
 		const user = getUserInfo(ctx)
 		operatorLogger('start', { command, user })
+
+		// Si el usuario estaba en medio de una operacion, la termina a la fuerza y empieza una nueva
 		if (this.buffer[user.id]?.isActive) this.buffer[user.id].end(ctx, 'iniciando una nueva')
+
 		this.buffer[user.id] = new Operation(user.id, command)
 	},
-	async nextStep(ctx) {
+	async executeNextStep(ctx) {
 		const user = getUserInfo(ctx)
 		operatorLogger('nextStep', { user })
 		this.buffer[user.id].nextStep(ctx)
 	},
-	end(ctx, reason) {
+	executeEnd(ctx, reason) {
 		const user = getUserInfo(ctx)
 		operatorLogger('end', { buffer: this.buffer, user, reason })
 		this.buffer[user.id].end(ctx, reason)

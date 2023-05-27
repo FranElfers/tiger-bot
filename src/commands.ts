@@ -47,7 +47,7 @@ export const callbackMaster = async (ctx: NarrowedContext<Context<Update>, Updat
 }
 
 export const textReceiver = async (ctx: ContextParameter) => {
-	if (Operator.buffer[ctx.chat.id]?.isActive) Operator.nextStep(ctx)
+	if (Operator.buffer[ctx.chat.id]?.isActive) Operator.executeNextStep(ctx)
 	return
 }
 
@@ -89,14 +89,14 @@ Fondos: $${income.total - expenses.total}`
 const broadcastSteps: SimpleOperation[] = [
 	async function (ctx) {
 		if (ctx.chat.id !== ADMIN) return
-		Operator.start(ctx, 'broadcast')
+		Operator.executeStart(ctx, 'broadcast')
 
 		ctx.reply('Mensaje para broadcastear a todos los usuarios:')
 	},
 	async function (ctx) {
 		const message = `🔞 Transmision del 🅰dmin a todos los usuarios 🔞\n${ctx.message.text}`
 		broadcastMessage(message)
-		Operator.end(ctx, EndReason.OK)
+		Operator.executeEnd(ctx, EndReason.OK)
 	},
 ]
 

@@ -9,7 +9,7 @@ import { getUserInfo } from '../utils/handlers'
 /** Pasos de /feedback */
 export const feedbackSteps: SimpleOperation[] = [
 	async function (ctx) {
-		Operator.start(ctx, 'feedback')
+		Operator.executeStart(ctx, 'feedback')
 		ctx.reply('Escribi tus comentarios en un solo mensaje:')
 	},
 	async function (ctx) {
@@ -21,6 +21,6 @@ export const feedbackSteps: SimpleOperation[] = [
 		await ctx.reply('Subiendo feedback')
 		await addNewAnonFeedback(userInfo.id, feedbackText)
 		sendMessageToUser(ADMIN, adminReceipt)
-		Operator.end(ctx, EndReason.OK)
+		Operator.executeEnd(ctx, EndReason.OK)
 	},
 ]

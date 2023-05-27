@@ -8,7 +8,7 @@ import { EndReason } from '../enum'
 /** Pasos de /payment */
 export const paymentSteps: SimpleOperation[] = [
 	async function (ctx) {
-		Operator.start(ctx, 'payment')
+		Operator.executeStart(ctx, 'payment')
 		// const username = ctx.chat.id.toString()
 		// newOperation(OperationType.Payment, username)
 
@@ -22,7 +22,7 @@ export const paymentSteps: SimpleOperation[] = [
 		if (parts.length < 2) {
 			logger.error('Incomplete command')
 			ctx.reply('Comando incompleto')
-			Operator.end(ctx)
+			Operator.executeEnd(ctx)
 			return
 		}
 
@@ -35,7 +35,7 @@ export const paymentSteps: SimpleOperation[] = [
 				// si tiene un - no lo cuenta
 				if (parts[0].includes('-')) {
 					logger.error('"-" detected')
-					Operator.end(ctx)
+					Operator.executeEnd(ctx)
 					return ctx.reply('No se admitem "-"')
 				}
 
@@ -50,18 +50,18 @@ export const paymentSteps: SimpleOperation[] = [
 					})
 				} catch (err) {
 					logger.error('Firebase push error')
-					Operator.end(ctx, EndReason.OK)
+					Operator.executeEnd(ctx, EndReason.OK)
 					return ctx.reply('Hubo un error')
 				}
 				const gastos = await fb.getCollection<{ monto: number; nombre: string }>('gasto')
 				const suma = gastos.reduce((acc, curr) => acc + curr.monto, 0)
 				logger.info(`${ctx.message.text}: OK`)
-				Operator.end(ctx)
+				Operator.executeEnd(ctx)
 				return ctx.reply(`$${amount} OK. Fondos: $${suma.toFixed(2)}`)
 			}
 		}
 		logger.error('Invalid')
-		Operator.end(ctx)
+		Operator.executeEnd(ctx)
 		return ctx.reply('Invalido')
 	},
 ]
