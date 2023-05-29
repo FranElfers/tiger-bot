@@ -21,12 +21,13 @@ export class Operation {
 	operation: OperationName
 	step: number
 	isActive: boolean
-
+	totalSteps: number
 	constructor(userId: number, operation: OperationName) {
 		this.userId = userId
 		this.operation = operation
 		this.isActive = true
 		this.step = 0
+		this.totalSteps = allSteps[operation].length
 		logger.info(`[operation:${this.userId}] Starting new ${this.operation}`)
 		// deberia empezar un timeout por aca
 	}

@@ -47,8 +47,15 @@ export const callbackMaster = async (ctx: NarrowedContext<Context<Update>, Updat
 }
 
 export const textReceiver = async (ctx: ContextParameter) => {
-	if (Operator.buffer[ctx.chat.id]?.isActive) Operator.executeNextStep(ctx)
-	return
+	const bufferedOperation = Operator.buffer[ctx.chat.id]
+	if (bufferedOperation === undefined) return
+
+	const { isActive, totalSteps, step } = bufferedOperation
+
+	// si no existe siguiente paso, no ejecutarlo
+	if (totalSteps === step + 1) return
+
+	if (isActive) Operator.executeNextStep(ctx)
 }
 
 export const gastos = async (ctx: ContextParameter) => {
