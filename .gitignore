@@ -1,6 +1,6 @@
 node_modules
 .env
-package-lock.json
+*.env
 dist
 database.json
 test-database.json
