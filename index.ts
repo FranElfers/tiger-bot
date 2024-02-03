@@ -2,6 +2,7 @@ import { getBotStatus, startBot, stopBot } from './src/botControl'
 import express from 'express'
 import { readFile } from 'fs'
 import { logger } from './src/logger'
+import fb from './src/database/firebase'
 
 const app = express()
 
@@ -32,6 +33,12 @@ app.get('/start', (req, res) => {
 app.get('/stop', (req, res) => {
 	stopBot().then((status) => {
 		res.send({ status })
+	})
+})
+
+app.get('/last-feedback', (req, res) => {
+	fb.getCollection('feedback').then((feedbackArray) => {
+		res.send(feedbackArray)
 	})
 })
 

@@ -18,15 +18,17 @@
 	</head>
 	<body>
 		<h1>Buenas desde html</h1>
+		<button id="refresh">Actualizar</button>
 		<p id="status"></p>
 		<button id="botStart">Iniciar bot</button>
 		<button id="botStop">Detener bot</button>
 		<input type="text" name="url" id="url" placeholder="http://localhost:3000" />
+		<div id="feedback"></div>
 
 		<script>
 			let url = 'http://localhost:3000'
 
-			function impactAPI(route) {
+			function getFromAPI(route) {
 				return fetch(url + route)
 					.then((res) => res.json())
 					.then((res) => {
@@ -40,25 +42,39 @@
 			const stopButton = document.querySelector('#botStop')
 			const statusTextElement = document.querySelector('#status')
 			const urlTextInput = document.querySelector('#url')
+			const feedbackList = document.querySelector('#feedback')
+			const refreshButton = document.querySelector('#refresh')
 
 			startButton.addEventListener('click', (e) => {
 				url = urlTextInput.textContent
-				impactAPI('/start')
+				getFromAPI('/start').then(updateBotStatus)
 			})
 
 			stopButton.addEventListener('click', (e) => {
-				impactAPI('/stop')
+				getFromAPI('/stop').then(updateBotStatus)
+			})
+
+			refreshButton.addEventListener('click', (e) => {
+				updateBotStatus()
 			})
 
 			function updateBotStatus() {
-				impactAPI('/status').then((res) => {
+				getFromAPI('/status').then((res) => {
 					statusTextElement.textContent = res.status
+				})
+				getFromAPI('/last-feedback').then((res) => {
+					feedbackList.innerHTML = ''
+					res.map((feedback) => {
+						const nuevoElemento = document.createElement('p')
+						nuevoElemento.textContent = `user="${feedback.userId}" text="${feedback.text}"`
+						feedbackList.appendChild(nuevoElemento)
+					})
 				})
 			}
 
 			updateBotStatus()
 
-			setInterval(updateBotStatus, 5000)
+			// setInterval(updateBotStatus, 5000)
 		</script>
 	</body>
 </html>

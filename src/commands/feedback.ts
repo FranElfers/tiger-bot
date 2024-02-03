@@ -15,7 +15,7 @@ export const feedbackSteps: SimpleOperation[] = [
 	async function (ctx) {
 		const feedbackText = ctx.message.text
 		const userInfo = getUserInfo(ctx)
-		const adminReceipt = `from: ${userInfo.name}\nfeedback: ${feedbackText}`
+		const adminReceipt = `👤: ${userInfo.name}\n📝: ${feedbackText}`
 
 		logger.info(`[feedback] ${feedbackText}`)
 		await ctx.reply('Subiendo feedback')
